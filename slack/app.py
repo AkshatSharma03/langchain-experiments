@@ -6,6 +6,8 @@ from slack_bolt import App
 from dotenv import find_dotenv, load_dotenv
 from flask import Flask, request
 from functions import draft_email
+from slackeventsapi import SlackEventAdapter
+from slack_bolt.adapter.socket_mode import SocketModeHandler
 
 # Load environment variables from .env file
 load_dotenv(find_dotenv())
@@ -21,6 +23,7 @@ app = App(token=SLACK_BOT_TOKEN)
 # Initialize the Flask app
 # Flask is a web application framework written in Python
 flask_app = Flask(__name__)
+#slack_event_adapter = SlackEventAdapter(os.environ["SLACK_SIGNING_SECRET"],'/slack/events', app)
 handler = SlackRequestHandler(app)
 
 
@@ -52,7 +55,7 @@ def my_function(text):
     """
     response = text.upper()
     return response
-
+t()
 
 @app.event("app_mention")
 def handle_mentions(body, say):
@@ -77,6 +80,7 @@ def handle_mentions(body, say):
 
 @flask_app.route("/slack/events", methods=["POST"])
 def slack_events():
+    
     """
     Route for handling Slack events.
     This function passes the incoming HTTP request to the SlackRequestHandler for processing.
